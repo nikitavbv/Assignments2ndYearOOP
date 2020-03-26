@@ -31,7 +31,8 @@ public class MenuView {
   }
 
   public String possibleActionsAsString() {
-    return Arrays.stream(MenuOption.values()).map(MenuOption::description)
+    return Arrays.stream(MenuOption.values())
+            .map(MenuOption::description)
             .collect(Collectors.joining(System.lineSeparator()));
   }
 }
