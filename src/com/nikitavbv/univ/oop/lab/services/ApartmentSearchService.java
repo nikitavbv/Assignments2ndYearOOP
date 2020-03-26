@@ -30,9 +30,6 @@ public class ApartmentSearchService {
       }
     }
 
-    Apartment[] trimmed = new Apartment[i];
-    System.arraycopy(newArr, 0, trimmed, 0, i);
-
-    return trimmed;
+    return Arrays.copyOf(newArr, i);
   }
 }
