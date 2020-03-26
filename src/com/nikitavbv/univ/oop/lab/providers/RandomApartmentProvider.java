@@ -34,7 +34,7 @@ public class RandomApartmentProvider implements ApartmentProvider {
   }
 
   private int randomFlatNumber(BuildingType type) {
-    return random.nextInt(type.maxNumberOfFlats());
+    return random.nextInt(type.maxNumberOfFlats()) + 1;
   }
 
   private double randomArea(BuildingType type) {
