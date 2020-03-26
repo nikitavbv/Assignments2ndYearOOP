@@ -21,14 +21,7 @@ public class ApartmentSearchService {
   public Apartment[] apartmentsByCriteria(Apartment[] apartments, Predicate<Apartment> criteria) {
     // Simpler: return Arrays.stream(apartments).filter(criteria).toArray(Apartment[]::new);
 
-    int totalMatching = 0;
-    for (Apartment apartment : apartments) {
-      if (criteria.test(apartment)) {
-        totalMatching++;
-      }
-    }
-
-    Apartment[] newArr = new Apartment[totalMatching];
+    Apartment[] newArr = new Apartment[apartments.length];
     int i = 0;
     for (Apartment apartment : apartments) {
       if (criteria.test(apartment)) {
@@ -37,6 +30,9 @@ public class ApartmentSearchService {
       }
     }
 
-    return newArr;
+    Apartment[] trimmed = new Apartment[i];
+    System.arraycopy(newArr, 0, trimmed, 0, i);
+
+    return trimmed;
   }
 }

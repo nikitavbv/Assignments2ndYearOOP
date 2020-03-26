@@ -7,6 +7,7 @@ import com.nikitavbv.univ.oop.lab.views.MenuView;
 import java.util.Map;
 import java.util.Optional;
 
+@SuppressWarnings("OptionalIsPresent")
 public class MenuController {
 
   private MenuView menuView;
@@ -39,8 +40,6 @@ public class MenuController {
 
       if (handler.isPresent()) {
         handler.get().run();
-      } else {
-        throw new AssertionError("Runnable for option not set: " + menuOption);
       }
     }
   }

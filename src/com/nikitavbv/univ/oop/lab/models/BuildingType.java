@@ -19,7 +19,7 @@ public enum BuildingType {
       case FLAT_BLOCK:
         return 400;
       default:
-        throw new AssertionError("Max number of flats not specified for: " + this);
+        return 100;
     }
   }
 
@@ -35,7 +35,7 @@ public enum BuildingType {
       case FLAT_BLOCK:
         return 150;
       default:
-        throw new AssertionError("Max area is not specified for: " + this);
+        return 150;
     }
   }
 
@@ -49,7 +49,7 @@ public enum BuildingType {
       case FLAT_BLOCK:
         return 35;
       default:
-        throw new AssertionError("Max floors is not specified for: " + this);
+        return 20;
     }
   }
 
@@ -65,11 +65,11 @@ public enum BuildingType {
       case FLAT_BLOCK:
         return 6;
       default:
-        throw new AssertionError("Max rooms is not set for: " + this);
+        return 6;
     }
   }
 
   public int maxLifetime() {
-    return 20; // does not depend on building time
+    return 20;
   }
 }

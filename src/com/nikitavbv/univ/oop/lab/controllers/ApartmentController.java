@@ -10,6 +10,7 @@ import com.nikitavbv.univ.oop.lab.validation.Validator;
 import com.nikitavbv.univ.oop.lab.validation.Verdict;
 import com.nikitavbv.univ.oop.lab.views.ApartmentSearchUserPromptView;
 import com.nikitavbv.univ.oop.lab.views.ApartmentsView;
+import java.util.Optional;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ApartmentController {
@@ -48,53 +49,57 @@ public class ApartmentController {
   }
 
   public void runSearchByRooms() {
-    try {
-      apartmentSearchUserPromptView.printNumberOfRoomsRequest();
+    apartmentSearchUserPromptView.printNumberOfRoomsRequest();
 
-      int numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
-
-      Verdict verdict = NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
-      if (verdict.isNegative()) {
-        apartmentsView.showInvalidInputMessage(verdict.explanation().get());
-        return;
-      }
-
-      Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
-              apartments,
-              ApartmentSearchService.numberOfRoomsCriteria(numberOfRoomsFilter)
-      );
-
-      apartmentsView.showApartments(searchResults);
-    } catch (NumberFormatException e) {
+    Optional<Integer> numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
+    if (numberOfRoomsFilter.isEmpty()) {
       apartmentsView.showInvalidInputMessage(EXPECTED_NUMBER_ERROR);
+      return;
     }
+
+    Verdict verdict = NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter.get());
+    if (verdict.isNegative()) {
+      apartmentsView.showInvalidInputMessage(verdict.explanation().get());
+      return;
+    }
+
+    Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
+            apartments,
+            ApartmentSearchService.numberOfRoomsCriteria(numberOfRoomsFilter.get())
+    );
+
+    apartmentsView.showApartments(searchResults);
   }
 
   public void runSearchByAreaAndFloor() {
-    try {
-      apartmentSearchUserPromptView.printAreaRequest();
-      double minArea = apartmentSearchUserInput.requestArea();
-      Verdict minAreaValidationVerdict = AREA_VALIDATOR.validate(minArea);
-      if (minAreaValidationVerdict.isNegative()) {
-        apartmentsView.showInvalidInputMessage(minAreaValidationVerdict.explanation().get());
-        return;
-      }
-
-      apartmentSearchUserPromptView.printFloorRequest();
-      int minFloor = apartmentSearchUserInput.requestFloor();
-      Verdict minFloorValidationVerdict = FLOOR_VALIDATOR.validate(minFloor);
-      if (minFloorValidationVerdict.isNegative()) {
-        apartmentsView.showInvalidInputMessage(minFloorValidationVerdict.explanation().get());
-        return;
-      }
-
-      Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
-              apartments,
-              ApartmentSearchService.minAreaCriteria(minArea).and(ApartmentSearchService.minFloorCriteria(minFloor))
-      );
-      apartmentsView.showApartments(searchResults);
-    } catch (NumberFormatException e) {
+    apartmentSearchUserPromptView.printAreaRequest();
+    Optional<Double> minArea = apartmentSearchUserInput.requestArea();
+    if (minArea.isEmpty()) {
       apartmentsView.showInvalidInputMessage(EXPECTED_NUMBER_ERROR);
+      return;
     }
+    Verdict minAreaValidationVerdict = AREA_VALIDATOR.validate(minArea.get());
+    if (minAreaValidationVerdict.isNegative()) {
+      apartmentsView.showInvalidInputMessage(minAreaValidationVerdict.explanation().get());
+      return;
+    }
+
+    apartmentSearchUserPromptView.printFloorRequest();
+    Optional<Integer> minFloor = apartmentSearchUserInput.requestFloor();
+    if (minFloor.isEmpty()) {
+      apartmentsView.showInvalidInputMessage(EXPECTED_NUMBER_ERROR);
+      return;
+    }
+    Verdict minFloorValidationVerdict = FLOOR_VALIDATOR.validate(minFloor.get());
+    if (minFloorValidationVerdict.isNegative()) {
+      apartmentsView.showInvalidInputMessage(minFloorValidationVerdict.explanation().get());
+      return;
+    }
+
+    Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
+            apartments,
+            ApartmentSearchService.minAreaCriteria(minArea.get()).and(ApartmentSearchService.minFloorCriteria(minFloor.get()))
+    );
+    apartmentsView.showApartments(searchResults);
   }
 }

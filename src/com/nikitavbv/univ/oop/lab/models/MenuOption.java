@@ -29,26 +29,16 @@ public enum MenuOption {
   }
 
   public String description() {
-    Optional<String> command = command();
-    if (!command.isPresent()) {
-      throw new AssertionError("Could not find command for option: " + this);
-    }
-
-    Optional<String> description = Optional.ofNullable(OPTIONS_TO_DESCRIPTIONS.get(this));
-    if (!description.isPresent()) {
-      throw new AssertionError("Description not set for option: " + this);
-    }
-
-    return String.format("[%s]: %s", command.get(), description.get());
+    return String.format("[%s]: %s", command(), OPTIONS_TO_DESCRIPTIONS.get(this));
   }
 
-  public Optional<String> command() {
+  public String command() {
     for (String key : COMMANDS_TO_OPTIONS.keySet()) {
       if (COMMANDS_TO_OPTIONS.get(key) == this) {
-        return Optional.of(key);
+        return key;
       }
     }
 
-    return Optional.empty();
+    return "";
   }
 }
