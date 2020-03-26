@@ -38,9 +38,9 @@ public class ApartmentsView {
             "lifetime"
     );
 
-    Arrays.stream(apartments)
-            .map(this::showApartment)
-            .forEach(outputWriter::println);
+    for (Apartment apartment : apartments) {
+      outputWriter.println(showApartment(apartment));
+    }
   }
 
   public void showInvalidInputMessage(String message) {
