@@ -29,10 +29,7 @@ public class ApartmentController {
   private ApartmentSearchUserPromptView apartmentSearchUserPromptView;
   private ApartmentSearchUserInput apartmentSearchUserInput;
 
-  private Apartment[] apartments;
-
-  public ApartmentController(ApartmentProvider apartmentProvider,
-                             ApartmentSearchService apartmentSearchService,
+  public ApartmentController(ApartmentSearchService apartmentSearchService,
                              ApartmentsView apartmentsView,
                              ApartmentSearchUserPromptView apartmentSearchUserPromptView,
                              ApartmentSearchUserInput apartmentSearchUserInput) {
@@ -40,12 +37,10 @@ public class ApartmentController {
     this.apartmentSearchService = apartmentSearchService;
     this.apartmentSearchUserPromptView = apartmentSearchUserPromptView;
     this.apartmentSearchUserInput = apartmentSearchUserInput;
-
-    this.apartments = apartmentProvider.allApartments();
   }
 
   public void runShowAll() {
-    apartmentsView.showApartments(apartments);
+    apartmentsView.showApartments(apartmentSearchService.allApartments());
   }
 
   public void runSearchByRooms() {
@@ -64,7 +59,6 @@ public class ApartmentController {
     }
 
     Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
-            apartments,
             ApartmentSearchService.numberOfRoomsCriteria(numberOfRoomsFilter.get())
     );
 
@@ -97,7 +91,6 @@ public class ApartmentController {
     }
 
     Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
-            apartments,
             ApartmentSearchService.minAreaCriteria(minArea.get()).and(ApartmentSearchService.minFloorCriteria(minFloor.get()))
     );
     apartmentsView.showApartments(searchResults);

@@ -28,9 +28,9 @@ public class Main {
   private static final ApartmentSearchUserPromptView APARTMENT_SEARCH_USER_PROMPT_VIEW =
           new ApartmentSearchUserPromptView(System.out);
   private static final ApartmentSearchUserInput USER_INPUT = new ApartmentSearchUserInput(System.in);
-  private static final ApartmentSearchService APARTMENT_SEARCH_SERVICE = new ApartmentSearchService();
+  private static final ApartmentSearchService APARTMENT_SEARCH_SERVICE = new ApartmentSearchService(APARTMENT_PROVIDER);
   private static final ApartmentController MAIN_CONTROLLER = new ApartmentController(
-          APARTMENT_PROVIDER, APARTMENT_SEARCH_SERVICE, APARTMENTS_VIEW, APARTMENT_SEARCH_USER_PROMPT_VIEW, USER_INPUT
+          APARTMENT_SEARCH_SERVICE, APARTMENTS_VIEW, APARTMENT_SEARCH_USER_PROMPT_VIEW, USER_INPUT
   );
 
   public static void main(String[] args) {

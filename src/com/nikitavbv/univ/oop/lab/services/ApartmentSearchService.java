@@ -1,10 +1,17 @@
 package com.nikitavbv.univ.oop.lab.services;
 
 import com.nikitavbv.univ.oop.lab.models.Apartment;
+import com.nikitavbv.univ.oop.lab.providers.ApartmentProvider;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
 public class ApartmentSearchService {
+
+  private ApartmentProvider apartmentProvider;
+
+  public ApartmentSearchService(ApartmentProvider apartmentProvider) {
+    this.apartmentProvider = apartmentProvider;
+  }
 
   public static Predicate<Apartment> numberOfRoomsCriteria(int numberOfRooms) {
     return apartment -> apartment.getTotalRooms() == numberOfRooms;
@@ -18,9 +25,14 @@ public class ApartmentSearchService {
     return apartment -> apartment.getFloor() >= minFloor;
   }
 
-  public Apartment[] apartmentsByCriteria(Apartment[] apartments, Predicate<Apartment> criteria) {
+  public Apartment[] allApartments() {
+    return apartmentProvider.allApartments();
+  }
+
+  public Apartment[] apartmentsByCriteria(Predicate<Apartment> criteria) {
     // Simpler: return Arrays.stream(apartments).filter(criteria).toArray(Apartment[]::new);
 
+    Apartment[] apartments = apartmentProvider.allApartments();
     Apartment[] newArr = new Apartment[apartments.length];
     int i = 0;
     for (Apartment apartment : apartments) {

@@ -9,6 +9,7 @@ public class RandomApartmentProvider implements ApartmentProvider {
 
   private final Random random;
   private final int totalApartments;
+  private Apartment[] apartments;
 
   public RandomApartmentProvider(Random random, int totalApartments) {
     this.random = random;
@@ -28,6 +29,14 @@ public class RandomApartmentProvider implements ApartmentProvider {
   }
 
   public Apartment[] allApartments() {
+    if (apartments == null) {
+      apartments = generateApartments();
+    }
+
+    return apartments;
+  }
+
+  private Apartment[] generateApartments() {
     return IntStream.range(0, totalApartments)
             .mapToObj(i -> nextApartment())
             .toArray(Apartment[]::new);
