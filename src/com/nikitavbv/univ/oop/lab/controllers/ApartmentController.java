@@ -11,6 +11,7 @@ import com.nikitavbv.univ.oop.lab.validation.Verdict;
 import com.nikitavbv.univ.oop.lab.views.ApartmentSearchUserPromptView;
 import com.nikitavbv.univ.oop.lab.views.ApartmentsView;
 
+@SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ApartmentController {
 
   private static final Validator<Integer> NUMBER_OF_ROOMS_VALIDATOR =
@@ -49,7 +50,7 @@ public class ApartmentController {
     int numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
     Verdict verdict = NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
     if (verdict.isNegative()) {
-      apartmentsView.showInvalidInputMessage();
+      apartmentsView.showInvalidInputMessage(verdict.explanation().get());
       return;
     }
 
@@ -66,7 +67,7 @@ public class ApartmentController {
     double minArea = apartmentSearchUserInput.requestArea();
     Verdict minAreaValidationVerdict = AREA_VALIDATOR.validate(minArea);
     if (minAreaValidationVerdict.isNegative()) {
-      apartmentsView.showInvalidInputMessage();
+      apartmentsView.showInvalidInputMessage(minAreaValidationVerdict.explanation().get());
       return;
     }
 
@@ -74,7 +75,7 @@ public class ApartmentController {
     int minFloor = apartmentSearchUserInput.requestFloor();
     Verdict minFloorValidationVerdict = FLOOR_VALIDATOR.validate(minFloor);
     if (minFloorValidationVerdict.isNegative()) {
-      apartmentsView.showInvalidInputMessage();
+      apartmentsView.showInvalidInputMessage(minFloorValidationVerdict.explanation().get());
       return;
     }
 

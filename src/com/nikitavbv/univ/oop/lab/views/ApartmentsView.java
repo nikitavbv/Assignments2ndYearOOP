@@ -43,8 +43,8 @@ public class ApartmentsView {
             .forEach(outputWriter::println);
   }
 
-  public void showInvalidInputMessage() {
-    System.err.println("Invalid input");
+  public void showInvalidInputMessage(String message) {
+    System.err.println("Invalid input: " + message);
   }
 
   private String showApartment(Apartment apartment) {
