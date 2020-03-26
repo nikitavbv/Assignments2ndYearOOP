@@ -25,8 +25,6 @@ public class MenuController {
 
   @SuppressWarnings("InfiniteLoopStatement")
   public void run() {
-    menuView.showWelcome();
-
     while (true) {
       menuView.showMenu();
 
@@ -51,11 +49,11 @@ public class MenuController {
     return Optional.ofNullable(handlers.get(menuOption));
   }
 
-  private Map<MenuOption, Runnable> handlersInit(ApartmentController mainService) {
+  private Map<MenuOption, Runnable> handlersInit(ApartmentController apartmentController) {
     return Map.of(
-            MenuOption.SHOW_ALL, mainService::runShowAll,
-            MenuOption.SEARCH_BY_ROOMS, mainService::runSearchByRooms,
-            MenuOption.SEARCH_BY_AREA_AND_FLOOR, mainService::runSearchByAreaAndFloor,
+            MenuOption.SHOW_ALL, apartmentController::runShowAll,
+            MenuOption.SEARCH_BY_ROOMS, apartmentController::runSearchByRooms,
+            MenuOption.SEARCH_BY_AREA_AND_FLOOR, apartmentController::runSearchByAreaAndFloor,
             MenuOption.EXIT, () -> System.exit(0)
     );
   }

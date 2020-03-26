@@ -34,15 +34,4 @@ public class MenuView {
     return Arrays.stream(MenuOption.values()).map(MenuOption::description)
             .collect(Collectors.joining(System.lineSeparator()));
   }
-
-  public void showWelcome() {
-    System.out.println(
-            "  _          _       _ \n" +
-            " | |    __ _| |__   / |\n" +
-            " | |   / _` | '_ \\  | |\n" +
-            " | |__| (_| | |_) | | |\n" +
-            " |_____\\__,_|_.__/  |_|\n" +
-            "                       "
-    );
-  }
 }
