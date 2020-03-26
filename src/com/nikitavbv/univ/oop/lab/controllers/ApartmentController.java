@@ -21,6 +21,8 @@ public class ApartmentController {
   private static final Validator<Integer> FLOOR_VALIDATOR =
           new NumberInBoundsValidator<>("Floor should be in (0..100)", 0, 100);
 
+  private static final String EXPECTED_NUMBER_ERROR = "Input should be a number";
+
   private ApartmentsView apartmentsView;
   private ApartmentSearchService apartmentSearchService;
   private ApartmentSearchUserPromptView apartmentSearchUserPromptView;
@@ -46,43 +48,53 @@ public class ApartmentController {
   }
 
   public void runSearchByRooms() {
-    apartmentSearchUserPromptView.printNumberOfRoomsRequest();
-    int numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
-    Verdict verdict = NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
-    if (verdict.isNegative()) {
-      apartmentsView.showInvalidInputMessage(verdict.explanation().get());
-      return;
+    try {
+      apartmentSearchUserPromptView.printNumberOfRoomsRequest();
+
+      int numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
+
+      Verdict verdict = NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
+      if (verdict.isNegative()) {
+        apartmentsView.showInvalidInputMessage(verdict.explanation().get());
+        return;
+      }
+
+      Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
+              apartments,
+              ApartmentSearchService.numberOfRoomsCriteria(numberOfRoomsFilter)
+      );
+
+      apartmentsView.showApartments(searchResults);
+    } catch (NumberFormatException e) {
+      apartmentsView.showInvalidInputMessage(EXPECTED_NUMBER_ERROR);
     }
-
-    Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
-            apartments,
-            ApartmentSearchService.numberOfRoomsCriteria(numberOfRoomsFilter)
-    );
-
-    apartmentsView.showApartments(searchResults);
   }
 
   public void runSearchByAreaAndFloor() {
-    apartmentSearchUserPromptView.printAreaRequest();
-    double minArea = apartmentSearchUserInput.requestArea();
-    Verdict minAreaValidationVerdict = AREA_VALIDATOR.validate(minArea);
-    if (minAreaValidationVerdict.isNegative()) {
-      apartmentsView.showInvalidInputMessage(minAreaValidationVerdict.explanation().get());
-      return;
-    }
+    try {
+      apartmentSearchUserPromptView.printAreaRequest();
+      double minArea = apartmentSearchUserInput.requestArea();
+      Verdict minAreaValidationVerdict = AREA_VALIDATOR.validate(minArea);
+      if (minAreaValidationVerdict.isNegative()) {
+        apartmentsView.showInvalidInputMessage(minAreaValidationVerdict.explanation().get());
+        return;
+      }
 
-    apartmentSearchUserPromptView.printFloorRequest();
-    int minFloor = apartmentSearchUserInput.requestFloor();
-    Verdict minFloorValidationVerdict = FLOOR_VALIDATOR.validate(minFloor);
-    if (minFloorValidationVerdict.isNegative()) {
-      apartmentsView.showInvalidInputMessage(minFloorValidationVerdict.explanation().get());
-      return;
-    }
+      apartmentSearchUserPromptView.printFloorRequest();
+      int minFloor = apartmentSearchUserInput.requestFloor();
+      Verdict minFloorValidationVerdict = FLOOR_VALIDATOR.validate(minFloor);
+      if (minFloorValidationVerdict.isNegative()) {
+        apartmentsView.showInvalidInputMessage(minFloorValidationVerdict.explanation().get());
+        return;
+      }
 
-    Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
-            apartments,
-            ApartmentSearchService.minAreaCriteria(minArea).and(ApartmentSearchService.minFloorCriteria(minFloor))
-    );
-    apartmentsView.showApartments(searchResults);
+      Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
+              apartments,
+              ApartmentSearchService.minAreaCriteria(minArea).and(ApartmentSearchService.minFloorCriteria(minFloor))
+      );
+      apartmentsView.showApartments(searchResults);
+    } catch (NumberFormatException e) {
+      apartmentsView.showInvalidInputMessage(EXPECTED_NUMBER_ERROR);
+    }
   }
 }
