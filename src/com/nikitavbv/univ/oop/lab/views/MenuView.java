@@ -8,8 +8,6 @@ import java.util.stream.Collectors;
 
 public class MenuView {
 
-  private static final String INVALID_ACTION_SELECTED_ERROR_MESSAGE = "Invalid menu action selected";
-
   private PrintStream outputWriter;
   private PrintStream errorWriter;
 
@@ -18,8 +16,8 @@ public class MenuView {
     this.errorWriter = new PrintStream(errorWriter);
   }
 
-  public void showInvalidActionSelectedError() {
-    errorWriter.println(INVALID_ACTION_SELECTED_ERROR_MESSAGE);
+  public void showError(String message) {
+    errorWriter.println("error: " + message);
   }
 
   public void showMenu() {

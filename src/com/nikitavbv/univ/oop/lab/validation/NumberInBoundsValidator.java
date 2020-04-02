@@ -1,5 +1,7 @@
 package com.nikitavbv.univ.oop.lab.validation;
 
+import com.nikitavbv.univ.oop.lab.validation.exception.NumberValueInvalidException;
+
 public class NumberInBoundsValidator<T extends Number> implements Validator<T> {
 
   private final String message;
@@ -13,11 +15,9 @@ public class NumberInBoundsValidator<T extends Number> implements Validator<T> {
   }
 
   @Override
-  public Verdict validate(T input) {
+  public void validate(T input) {
     if (input.doubleValue() <= minBound.doubleValue() || input.doubleValue() >= maxBound.doubleValue()) {
-      return Verdict.negative(message);
+      throw new NumberValueInvalidException(message);
     }
-
-    return Verdict.positive();
   }
 }

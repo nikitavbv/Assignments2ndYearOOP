@@ -2,13 +2,18 @@ package com.nikitavbv.univ.oop.lab.controllers;
 
 import com.nikitavbv.univ.oop.lab.input.MenuInput;
 import com.nikitavbv.univ.oop.lab.models.MenuOption;
+import com.nikitavbv.univ.oop.lab.validation.AllowedOptionValidator;
+import com.nikitavbv.univ.oop.lab.validation.Validator;
+import com.nikitavbv.univ.oop.lab.validation.exception.UnknownOptionException;
 import com.nikitavbv.univ.oop.lab.views.MenuPromptView;
 import com.nikitavbv.univ.oop.lab.views.MenuView;
 import java.util.Map;
 import java.util.Optional;
 
-@SuppressWarnings("OptionalIsPresent")
 public class MenuController {
+  private static final Validator<String> MENU_OPTION_VALIDATOR = new AllowedOptionValidator(new String[] {
+          "all", "search_rooms", "search_area_floor", "exit"
+  });
 
   private MenuView menuView;
   private MenuPromptView menuPromptView;
@@ -27,19 +32,20 @@ public class MenuController {
   @SuppressWarnings("InfiniteLoopStatement")
   public void run() {
     while (true) {
-      menuView.showMenu();
+      try {
+        menuView.showMenu();
 
-      menuPromptView.printSelectMenuOptionPrompt();
-      Optional<MenuOption> menuOption = menuInput.requestMenuOption();
-      if (menuOption.isEmpty()) {
-        menuView.showInvalidActionSelectedError();
-        continue;
-      }
+        menuPromptView.printSelectMenuOptionPrompt();
+        String menuOptionName = menuInput.requestMenuOptionName();
+        MENU_OPTION_VALIDATOR.validate(menuOptionName);
 
-      Optional<MenuOptionHandler> handler = handlerByOption(menuOption.get());
+        Optional<MenuOptionHandler> handler = handlerByOption(MenuOption.byCommand(menuOptionName));
 
-      if (handler.isPresent()) {
-        handler.get().handle();
+        if (handler.isPresent()) {
+          handler.get().handle();
+        }
+      } catch (UnknownOptionException e) {
+        menuView.showError(e.getMessage());
       }
     }
   }

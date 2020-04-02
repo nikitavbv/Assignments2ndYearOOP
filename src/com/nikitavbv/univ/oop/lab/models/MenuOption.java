@@ -1,5 +1,6 @@
 package com.nikitavbv.univ.oop.lab.models;
 
+import com.nikitavbv.univ.oop.lab.validation.exception.UnknownOptionException;
 import java.util.Map;
 import java.util.Optional;
 
@@ -24,8 +25,8 @@ public enum MenuOption {
           EXIT, "Exit"
   );
 
-  public static Optional<MenuOption> byCommand(String command) {
-    return Optional.ofNullable(COMMANDS_TO_OPTIONS.get(command));
+  public static MenuOption byCommand(String command) {
+    return COMMANDS_TO_OPTIONS.get(command);
   }
 
   public String description() {

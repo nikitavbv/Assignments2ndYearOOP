@@ -1,8 +1,6 @@
 package com.nikitavbv.univ.oop.lab.input;
 
-import com.nikitavbv.univ.oop.lab.models.MenuOption;
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class MenuInput {
@@ -13,7 +11,7 @@ public class MenuInput {
     this.scanner = new Scanner(inputStream);
   }
 
-  public Optional<MenuOption> requestMenuOption() {
-    return MenuOption.byCommand(scanner.nextLine().replaceAll("\n", "").trim());
+  public String requestMenuOptionName() {
+    return scanner.nextLine().replaceAll("\n", "").trim();
   }
 }

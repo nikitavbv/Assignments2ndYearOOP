@@ -1,7 +1,7 @@
 package com.nikitavbv.univ.oop.lab.input;
 
+import com.nikitavbv.univ.oop.lab.validation.exception.FailedToParseNumberException;
 import java.io.InputStream;
-import java.util.Optional;
 import java.util.Scanner;
 
 public class ApartmentSearchUserInput {
@@ -11,35 +11,35 @@ public class ApartmentSearchUserInput {
     scanner = new Scanner(in);
   }
 
-  public Optional<Integer> requestNumberOfRooms() {
+  public Integer requestNumberOfRooms() {
     return readInt();
   }
 
-  public Optional<Double> requestArea() {
+  public Double requestArea() {
     return readDouble();
   }
 
-  public Optional<Integer> requestFloor() {
+  public Integer requestFloor() {
     return readInt();
   }
 
-  private Optional<Integer> readInt() {
+  private Integer readInt() {
     String nextLine = scanner.nextLine();
 
-    if (nextLine.matches("-?\\d+")) {
-      return Optional.of(Integer.parseInt(nextLine));
+    if (!nextLine.matches("-?\\d+")) {
+      throw new FailedToParseNumberException(nextLine);
     }
 
-    return Optional.empty();
+    return Integer.parseInt(nextLine);
   }
 
-  private Optional<Double> readDouble() {
+  private Double readDouble() {
     String nextLine = scanner.nextLine();
 
-    if (nextLine.matches("-?\\d+(\\.\\d+)?")) {
-      return Optional.of(Double.parseDouble(nextLine));
+    if (!nextLine.matches("-?\\d+(\\.\\d+)?")) {
+      throw new FailedToParseNumberException(nextLine);
     }
 
-    return Optional.empty();
+    return Double.parseDouble(nextLine);
   }
 }

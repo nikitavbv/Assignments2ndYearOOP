@@ -1,5 +1,7 @@
 package com.nikitavbv.univ.oop.lab.validation;
 
+import com.nikitavbv.univ.oop.lab.validation.exception.NumberValueInvalidException;
+
 public class NonNegativeNumberValidator<T extends Number> implements Validator<T> {
 
   private final String message;
@@ -9,11 +11,9 @@ public class NonNegativeNumberValidator<T extends Number> implements Validator<T
   }
 
   @Override
-  public Verdict validate(T input) {
+  public void validate(T input) {
     if (input.doubleValue() <= 0) {
-      return Verdict.negative(message);
+      throw new NumberValueInvalidException(message);
     }
-
-    return Verdict.positive();
   }
 }

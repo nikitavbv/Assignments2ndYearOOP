@@ -43,8 +43,8 @@ public class ApartmentsView {
     }
   }
 
-  public void showInvalidInputMessage(String message) {
-    System.err.println("Invalid input: " + message);
+  public void showErrorMessage(String message) {
+    errorWriter.println("Error: " + message);
   }
 
   private String showApartment(Apartment apartment) {
