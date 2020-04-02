@@ -14,7 +14,7 @@ public class MenuController {
   private MenuPromptView menuPromptView;
   private MenuInput menuInput;
 
-  private final Map<MenuOption, Runnable> handlers;
+  private final Map<MenuOption, MenuOptionHandler> handlers;
 
   public MenuController(MenuView menuView, MenuPromptView promptView, MenuInput menuInput, ApartmentController mainService) {
     this.menuView = menuView;
@@ -36,24 +36,28 @@ public class MenuController {
         continue;
       }
 
-      Optional<Runnable> handler = handlerByOption(menuOption.get());
+      Optional<MenuOptionHandler> handler = handlerByOption(menuOption.get());
 
       if (handler.isPresent()) {
-        handler.get().run();
+        handler.get().handle();
       }
     }
   }
 
-  private Optional<Runnable> handlerByOption(MenuOption menuOption) {
+  private Optional<MenuOptionHandler> handlerByOption(MenuOption menuOption) {
     return Optional.ofNullable(handlers.get(menuOption));
   }
 
-  private Map<MenuOption, Runnable> handlersInit(ApartmentController apartmentController) {
+  private Map<MenuOption, MenuOptionHandler> handlersInit(ApartmentController apartmentController) {
     return Map.of(
             MenuOption.SHOW_ALL, apartmentController::runShowAll,
             MenuOption.SEARCH_BY_ROOMS, apartmentController::runSearchByRooms,
             MenuOption.SEARCH_BY_AREA_AND_FLOOR, apartmentController::runSearchByAreaAndFloor,
             MenuOption.EXIT, () -> System.exit(0)
     );
+  }
+
+  public interface MenuOptionHandler {
+    void handle();
   }
 }
