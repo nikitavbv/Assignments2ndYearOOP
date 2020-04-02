@@ -39,19 +39,18 @@ public class MenuController {
         String menuOptionName = menuInput.requestMenuOptionName();
         MENU_OPTION_VALIDATOR.validate(menuOptionName);
 
-        Optional<MenuOptionHandler> handler = handlerByOption(MenuOption.byCommand(menuOptionName));
+        MenuOptionHandler handler = handlerByOption(MenuOption.byCommand(menuOptionName));
 
-        if (handler.isPresent()) {
-          handler.get().handle();
-        }
+          handler.handle();
+
       } catch (UnknownOptionException e) {
         menuView.showError(e.getMessage());
       }
     }
   }
 
-  private Optional<MenuOptionHandler> handlerByOption(MenuOption menuOption) {
-    return Optional.ofNullable(handlers.get(menuOption));
+  private MenuOptionHandler handlerByOption(MenuOption menuOption) {
+    return handlers.get(menuOption);
   }
 
   private Map<MenuOption, MenuOptionHandler> handlersInit(ApartmentController apartmentController) {

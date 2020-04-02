@@ -41,38 +41,49 @@ public class ApartmentController {
   }
 
   public void runSearchByRooms() {
-    try {
-      apartmentSearchUserPromptView.printNumberOfRoomsRequest();
+    apartmentSearchUserPromptView.printNumberOfRoomsRequest();
+    Integer numberOfRoomsFilter;
 
-      Integer numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
-      NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
+      while(true) {
+        try {
+          numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
+          NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
+          break;
+        } catch (FailedToParseNumberException | NumberValueInvalidException e) {
+          apartmentsView.showErrorMessage(e.getMessage());
+        }
+      }
 
       Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
               ApartmentSearchService.numberOfRoomsCriteria(numberOfRoomsFilter)
       );
 
       apartmentsView.showApartments(searchResults);
-    } catch (FailedToParseNumberException | NumberValueInvalidException e) {
-      apartmentsView.showErrorMessage(e.getMessage());
-    }
   }
 
   public void runSearchByAreaAndFloor() {
-    try {
-      apartmentSearchUserPromptView.printAreaRequest();
-      Double minArea = apartmentSearchUserInput.requestArea();
-      AREA_VALIDATOR.validate(minArea);
+    Double minArea;
+    Integer minFloor;
 
-      apartmentSearchUserPromptView.printFloorRequest();
-      Integer minFloor = apartmentSearchUserInput.requestFloor();
-      FLOOR_VALIDATOR.validate(minFloor);
+    while(true) {
+      try {
+        apartmentSearchUserPromptView.printAreaRequest();
+        minArea = apartmentSearchUserInput.requestArea();
+        AREA_VALIDATOR.validate(minArea);
 
-      Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
-              ApartmentSearchService.minAreaCriteria(minArea).and(ApartmentSearchService.minFloorCriteria(minFloor))
-      );
-      apartmentsView.showApartments(searchResults);
-    } catch (FailedToParseNumberException | NumberValueInvalidException e) {
-      apartmentsView.showErrorMessage(e.getMessage());
+        apartmentSearchUserPromptView.printFloorRequest();
+        minFloor = apartmentSearchUserInput.requestFloor();
+        FLOOR_VALIDATOR.validate(minFloor);
+
+        break;
+      } catch (FailedToParseNumberException | NumberValueInvalidException e) {
+        apartmentsView.showErrorMessage(e.getMessage());
+      }
     }
+
+    Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
+      ApartmentSearchService.minAreaCriteria(minArea).and(ApartmentSearchService.minFloorCriteria(minFloor))
+    );
+    apartmentsView.showApartments(searchResults);
   }
 }
