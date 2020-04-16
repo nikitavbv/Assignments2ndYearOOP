@@ -36,6 +36,11 @@ public class RandomApartmentProvider implements ApartmentProvider {
     return apartments;
   }
 
+  @Override
+  public void addNew(Apartment apartment) {
+    throw new AssertionError("not implemented");
+  }
+
   private Apartment[] generateApartments() {
     return IntStream.range(0, totalApartments)
             .mapToObj(i -> nextApartment())

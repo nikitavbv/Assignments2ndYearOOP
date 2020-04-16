@@ -3,7 +3,6 @@ package com.nikitavbv.univ.oop.lab.views;
 import com.nikitavbv.univ.oop.lab.models.Apartment;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Arrays;
 
 public class ApartmentsView {
   private static final long NOTHING_FOUND_DELAY = 100; // ms
@@ -45,6 +44,10 @@ public class ApartmentsView {
 
   public void showErrorMessage(String message) {
     errorWriter.println("Error: " + message);
+  }
+
+  public void notifyApartmentsSaved() {
+    outputWriter.println("apartments saved to a file.");
   }
 
   private String showApartment(Apartment apartment) {

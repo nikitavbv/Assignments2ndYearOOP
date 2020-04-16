@@ -9,12 +9,14 @@ public enum MenuOption {
   SHOW_ALL,
   SEARCH_BY_ROOMS,
   SEARCH_BY_AREA_AND_FLOOR,
+  ADD_APARTMENT,
   EXIT;
 
   private static final Map<String, MenuOption> COMMANDS_TO_OPTIONS = Map.of(
           "all", SHOW_ALL,
           "search_rooms", SEARCH_BY_ROOMS,
           "search_area_floor", SEARCH_BY_AREA_AND_FLOOR,
+          "add", ADD_APARTMENT,
           "exit", EXIT
   );
 
@@ -22,6 +24,7 @@ public enum MenuOption {
           SHOW_ALL, "Show all apartments",
           SEARCH_BY_ROOMS, "Search by rooms",
           SEARCH_BY_AREA_AND_FLOOR, "Search by area and floor",
+          ADD_APARTMENT, "Add new apartment",
           EXIT, "Exit"
   );
 

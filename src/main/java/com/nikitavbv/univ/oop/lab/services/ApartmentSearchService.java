@@ -2,6 +2,7 @@ package com.nikitavbv.univ.oop.lab.services;
 
 import com.nikitavbv.univ.oop.lab.models.Apartment;
 import com.nikitavbv.univ.oop.lab.providers.ApartmentProvider;
+import java.io.IOException;
 import java.util.Arrays;
 import java.util.function.Predicate;
 
