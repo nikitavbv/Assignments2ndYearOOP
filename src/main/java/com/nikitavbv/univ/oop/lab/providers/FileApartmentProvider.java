@@ -1,5 +1,6 @@
 package com.nikitavbv.univ.oop.lab.providers;
 
+import com.google.gson.JsonSyntaxException;
 import com.nikitavbv.univ.oop.lab.models.Apartment;
 import com.nikitavbv.univ.oop.lab.models.persistence.FileApartmentReader;
 import com.nikitavbv.univ.oop.lab.providers.exceptions.FailedToReadApartmentsException;
@@ -20,8 +21,8 @@ public class FileApartmentProvider implements ApartmentProvider {
     if (this.apartments == null) {
       try {
         this.apartments = reader.readApartments();
-      } catch(IOException e) {
-        throw new FailedToReadApartmentsException();
+      } catch(IOException | JsonSyntaxException e) {
+        throw new FailedToReadApartmentsException(e);
       }
     }
 

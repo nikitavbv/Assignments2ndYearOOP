@@ -16,9 +16,12 @@ import com.nikitavbv.univ.oop.lab.views.AddApartmentView;
 import com.nikitavbv.univ.oop.lab.views.ApartmentSearchUserPromptView;
 import com.nikitavbv.univ.oop.lab.views.ApartmentsView;
 import java.io.IOException;
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ApartmentController {
+  private static final Logger LOGGER = LogManager.getLogger(MenuController.class);
 
   private static final Validator<Integer> NUMBER_OF_ROOMS_VALIDATOR =
           new NonNegativeNumberValidator<>("Number of rooms should be a positive number");
@@ -55,7 +58,7 @@ public class ApartmentController {
   }
 
   public void addApartment() {
-    System.out.println("here");
+    LOGGER.info("running add new apartment flow");
 
     addApartmentView.printFlatNumberRequest();
     int flatNumber = addApartmentInput.requestFlatNumber();
@@ -77,34 +80,46 @@ public class ApartmentController {
 
     Apartment apartment = new Apartment(flatNumber, area, floor, totalRooms, buildingType, lifetime);
     apartmentProvider.addNew(apartment);
+
+    LOGGER.info("new apartment is added");
   }
 
   public void runShowAll() {
+    LOGGER.info("running show all apartments flow");
     apartmentsView.showApartments(apartmentSearchService.allApartments());
   }
 
   public void runSearchByRooms() {
+    LOGGER.info("running search by rooms flow");
+
     apartmentSearchUserPromptView.printNumberOfRoomsRequest();
     Integer numberOfRoomsFilter;
 
-      while(true) {
-        try {
-          numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
-          NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
-          break;
-        } catch (FailedToParseNumberException | NumberValueInvalidException e) {
-          apartmentsView.showErrorMessage(e.getMessage());
-        }
+    while(true) {
+      try {
+        numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
+        NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
+        break;
+      } catch (FailedToParseNumberException | NumberValueInvalidException e) {
+        LOGGER.warn("failed to parse search input", e);
+        apartmentsView.showErrorMessage(e.getMessage());
       }
+    }
 
-      Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
-              ApartmentSearchService.numberOfRoomsCriteria(numberOfRoomsFilter)
-      );
+    LOGGER.info("searching apartments with rooms >= " + numberOfRoomsFilter);
 
-      apartmentsView.showApartments(searchResults);
+    Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
+      ApartmentSearchService.numberOfRoomsCriteria(numberOfRoomsFilter)
+    );
+
+    LOGGER.info("total apartments found: " + searchResults.length);
+
+    apartmentsView.showApartments(searchResults);
   }
 
   public void runSearchByAreaAndFloor() {
+    LOGGER.info("running search by area and floor flow");
+
     Double minArea;
     Integer minFloor;
 
@@ -120,21 +135,32 @@ public class ApartmentController {
 
         break;
       } catch (FailedToParseNumberException | NumberValueInvalidException e) {
+        LOGGER.warn("failed to parse search input", e);
         apartmentsView.showErrorMessage(e.getMessage());
       }
     }
 
+    LOGGER.info("running search with area >= " + minArea + " and floor >= " + minFloor);
+
     Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
       ApartmentSearchService.minAreaCriteria(minArea).and(ApartmentSearchService.minFloorCriteria(minFloor))
     );
+
+    LOGGER.info("total apartments found: " + searchResults.length);
+
     apartmentsView.showApartments(searchResults);
   }
 
   public void saveApartments() {
     try {
+      LOGGER.info("saving apartments");
+
       apartmentWriter.saveApartments(apartmentSearchService.allApartments());
       apartmentsView.notifyApartmentsSaved();
+
+      LOGGER.info("saved apartments to file");
     } catch (IOException e) {
+      LOGGER.error("failed to save apartments to file", e);
       apartmentsView.showErrorMessage("failed to save apartments");
     }
   }

@@ -11,8 +11,12 @@ import com.nikitavbv.univ.oop.lab.views.MenuPromptView;
 import com.nikitavbv.univ.oop.lab.views.MenuView;
 import java.util.Map;
 import java.util.Optional;
+import org.apache.logging.log4j.Logger;
+import org.apache.logging.log4j.LogManager;
 
 public class MenuController {
+  private static final Logger LOGGER = LogManager.getLogger(MenuController.class);
+
   private static final Validator<String> MENU_OPTION_VALIDATOR = new AllowedOptionValidator(new String[] {
           "all", "add", "search_rooms", "search_area_floor", "exit"
   });
@@ -38,6 +42,8 @@ public class MenuController {
 
   @SuppressWarnings("InfiniteLoopStatement")
   public void run() {
+    LOGGER.info("program started");
+
     if (!checkIfApartmentsAreLoaded()) {
       return;
     }
@@ -50,8 +56,11 @@ public class MenuController {
         String menuOptionName = menuInput.requestMenuOptionName();
         MENU_OPTION_VALIDATOR.validate(menuOptionName);
 
-        handlerByOption(MenuOption.byCommand(menuOptionName)).handle();
+        MenuOption menuOption = MenuOption.byCommand(menuOptionName);
+        LOGGER.info("menu option selected: " + menuOption);
+        handlerByOption(menuOption).handle();
       } catch (UnknownOptionException e) {
+        LOGGER.warn("unknown menu option", e);
         menuView.showError(e.getMessage());
       }
     }
@@ -79,6 +88,7 @@ public class MenuController {
       apartmentProvider.allApartments();
       return true;
     } catch (FailedToReadApartmentsException e) {
+      LOGGER.info("failed to read apartments", e);
       menuView.showError("Failed to read apartments");
       return false;
     }
