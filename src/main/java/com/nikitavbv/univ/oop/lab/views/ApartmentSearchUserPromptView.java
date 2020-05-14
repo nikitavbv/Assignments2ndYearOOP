@@ -5,14 +5,14 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class ApartmentSearchUserPromptView {
+public class ApartmentSearchUserPromptView implements View {
 
   private final PrintStream outputWriter;
-  private final ResourceBundle resourceBundle;
+  private ResourceBundle resourceBundle;
 
   public ApartmentSearchUserPromptView(OutputStream outputStream, Locale locale) {
     this.outputWriter = new PrintStream(outputStream);
-    this.resourceBundle = ResourceBundle.getBundle("ApartmentSearchResources", locale);
+    setLocale(locale);
   }
 
   public void printNumberOfRoomsRequest() {
@@ -29,5 +29,10 @@ public class ApartmentSearchUserPromptView {
 
   private void printFilterCriteriaRequest(String criteria) {
     outputWriter.printf(resourceBundle.getString("filterCriteriaRequest"), criteria);
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.resourceBundle = ResourceBundle.getBundle("ApartmentSearchResources", locale);
   }
 }

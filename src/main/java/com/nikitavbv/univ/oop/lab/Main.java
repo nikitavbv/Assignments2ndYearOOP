@@ -16,27 +16,28 @@ import com.nikitavbv.univ.oop.lab.views.ApartmentsView;
 import com.nikitavbv.univ.oop.lab.views.MenuPromptView;
 import com.nikitavbv.univ.oop.lab.views.MenuView;
 import java.io.File;
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class Main {
-  private static final Locale LOCALE = new Locale("ru", "UA");
+  private static final Locale DEFAULT_LOCALE = Locale.getDefault();
   private static final File APARTMENTS_DATA_FILE = new File("apartments.json");
 
   private static final FileApartmentWriter APARTMENT_WRITER = new FileApartmentWriter(APARTMENTS_DATA_FILE);
   private static final ApartmentProvider APARTMENT_PROVIDER =
           new FileApartmentProvider(new FileApartmentReader(APARTMENTS_DATA_FILE));
 
-  private static final MenuView MENU_VIEW = new MenuView(System.out, System.out, LOCALE);
-  private static final MenuPromptView MENU_PROMPT_VIEW = new MenuPromptView(System.out, LOCALE);
+  private static final MenuView MENU_VIEW = new MenuView(System.out, System.out, DEFAULT_LOCALE);
+  private static final MenuPromptView MENU_PROMPT_VIEW = new MenuPromptView(System.out, DEFAULT_LOCALE);
   private static final MenuInput MENU_INPUT = new MenuInput(System.in);
 
-  private static final ApartmentsView APARTMENTS_VIEW = new ApartmentsView(System.out, System.out, LOCALE);
+  private static final ApartmentsView APARTMENTS_VIEW = new ApartmentsView(System.out, System.out, DEFAULT_LOCALE);
   private static final ApartmentSearchUserPromptView APARTMENT_SEARCH_USER_PROMPT_VIEW =
-          new ApartmentSearchUserPromptView(System.out, LOCALE);
+          new ApartmentSearchUserPromptView(System.out, DEFAULT_LOCALE);
   private static final ApartmentSearchUserInput USER_INPUT = new ApartmentSearchUserInput(System.in);
   private static final ApartmentSearchService APARTMENT_SEARCH_SERVICE = new ApartmentSearchService(APARTMENT_PROVIDER);
-  private static final AddApartmentView ADD_APARTMENT_VIEW = new AddApartmentView(System.out, LOCALE);
+  private static final AddApartmentView ADD_APARTMENT_VIEW = new AddApartmentView(System.out, DEFAULT_LOCALE);
   private static final AddApartmentInput ADD_APARTMENT_INPUT = new AddApartmentInput(System.in);
   private static final ApartmentController MAIN_CONTROLLER = new ApartmentController(
           APARTMENT_SEARCH_SERVICE, APARTMENTS_VIEW, APARTMENT_SEARCH_USER_PROMPT_VIEW, USER_INPUT, APARTMENT_WRITER,
@@ -49,7 +50,10 @@ public class Main {
             MENU_PROMPT_VIEW,
             MENU_INPUT,
             MAIN_CONTROLLER,
-            APARTMENT_PROVIDER
+            APARTMENT_PROVIDER,
+            Arrays.asList(
+                    MENU_VIEW, MENU_PROMPT_VIEW, APARTMENTS_VIEW, APARTMENT_SEARCH_USER_PROMPT_VIEW, ADD_APARTMENT_VIEW
+            )
     ).run();
   }
 }

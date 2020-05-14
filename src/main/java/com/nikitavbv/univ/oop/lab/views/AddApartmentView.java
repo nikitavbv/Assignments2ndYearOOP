@@ -5,14 +5,14 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class AddApartmentView {
+public class AddApartmentView implements View {
 
   private final PrintStream out;
-  private final ResourceBundle resourceBundle;
+  private ResourceBundle resourceBundle;
 
   public AddApartmentView(OutputStream out, Locale locale) {
     this.out = new PrintStream(out);
-    this.resourceBundle = ResourceBundle.getBundle("AddApartmentResources", locale);
+    setLocale(locale);
   }
 
   public void printFlatNumberRequest() {
@@ -41,5 +41,10 @@ public class AddApartmentView {
 
   private void printLocalized(String key) {
     out.println(resourceBundle.getString(key));
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.resourceBundle = ResourceBundle.getBundle("AddApartmentResources", locale);
   }
 }

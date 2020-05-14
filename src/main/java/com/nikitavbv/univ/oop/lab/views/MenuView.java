@@ -9,7 +9,7 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class MenuView {
+public class MenuView implements View {
 
   private PrintStream outputWriter;
   private PrintStream errorWriter;
@@ -18,7 +18,11 @@ public class MenuView {
   public MenuView(OutputStream outputStream, OutputStream errorWriter, Locale locale) {
     this.outputWriter = new PrintStream(outputStream);
     this.errorWriter = new PrintStream(errorWriter);
-    this.resourceBundle = ResourceBundle.getBundle("MenuResources", locale);
+    setLocale(locale);
+  }
+
+  public void notifyLocaleChanged() {
+    outputWriter.println(resourceBundle.getString("localeChangedNotif"));
   }
 
   public void showFailedToReadApartmentsError() {
@@ -47,5 +51,10 @@ public class MenuView {
                     resourceBundle.getString("command_" + option.command())
             ))
             .collect(Collectors.joining(System.lineSeparator()));
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    this.resourceBundle = ResourceBundle.getBundle("MenuResources", locale);
   }
 }

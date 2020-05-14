@@ -8,17 +8,17 @@ import java.io.PrintStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class ApartmentsView {
+public class ApartmentsView implements View {
   private static final long NOTHING_FOUND_DELAY = 100; // ms
 
   private final PrintStream outputWriter;
   private final PrintStream errorWriter;
-  private final ResourceBundle resourceBundle;
+  private ResourceBundle resourceBundle;
 
   public ApartmentsView(OutputStream outputStream, OutputStream errorStream, Locale locale) {
     outputWriter = new PrintStream(outputStream);
     errorWriter = new PrintStream(errorStream);
-    resourceBundle = ResourceBundle.getBundle("ApartmentsViewResources", locale);
+    setLocale(locale);
   }
 
   public void showApartments(Apartment[] apartments) {
@@ -83,5 +83,10 @@ public class ApartmentsView {
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
+  }
+
+  @Override
+  public void setLocale(Locale locale) {
+    resourceBundle = ResourceBundle.getBundle("ApartmentsViewResources", locale);
   }
 }
