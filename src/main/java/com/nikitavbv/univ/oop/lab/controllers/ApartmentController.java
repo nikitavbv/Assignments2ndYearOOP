@@ -146,7 +146,7 @@ public class ApartmentController {
       }
     }
 
-    LOGGER.info("running search with area >= " + minArea + " and floor >= " + minFloor);
+    LOGGER.info("running search with area >= {} and floor >= {}", minArea, minFloor);
 
     Apartment[] searchResults = apartmentSearchService.apartmentsByCriteria(
       ApartmentSearchService.minAreaCriteria(minArea).and(ApartmentSearchService.minFloorCriteria(minFloor))

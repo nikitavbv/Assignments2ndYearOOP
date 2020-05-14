@@ -2,9 +2,9 @@ Configuration:
   status: warn
 
   Appenders:
-    Console:
-      name: stdout
-      target: SYSTEM_OUT
+    File:
+      name: logfile
+      fileName: logs/logs.log
       PatternLayout:
         Pattern: "%d{HH:mm:ss} %-5level | %-20class{1} | %msg%n"
 
@@ -12,4 +12,4 @@ Configuration:
     Root:
       level: debug
       AppenderRef:
-        ref: stdout
+        ref: logfile

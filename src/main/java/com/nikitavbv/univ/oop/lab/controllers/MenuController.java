@@ -104,7 +104,7 @@ public class MenuController {
       apartmentProvider.allApartments();
       return true;
     } catch (FailedToReadApartmentsException e) {
-      LOGGER.info("failed to read apartments", e);
+      LOGGER.fatal("failed to read apartments", e);
       menuView.showFailedToReadApartmentsError();
       return false;
     }
