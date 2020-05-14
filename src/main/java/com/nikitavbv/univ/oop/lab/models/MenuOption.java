@@ -1,8 +1,6 @@
 package com.nikitavbv.univ.oop.lab.models;
 
-import com.nikitavbv.univ.oop.lab.validation.exception.UnknownOptionException;
 import java.util.Map;
-import java.util.Optional;
 
 public enum MenuOption {
 
@@ -20,20 +18,8 @@ public enum MenuOption {
           "exit", EXIT
   );
 
-  private static final Map<MenuOption, String> OPTIONS_TO_DESCRIPTIONS = Map.of(
-          SHOW_ALL, "Show all apartments",
-          SEARCH_BY_ROOMS, "Search by rooms",
-          SEARCH_BY_AREA_AND_FLOOR, "Search by area and floor",
-          ADD_APARTMENT, "Add new apartment",
-          EXIT, "Exit"
-  );
-
   public static MenuOption byCommand(String command) {
     return COMMANDS_TO_OPTIONS.get(command);
-  }
-
-  public String description() {
-    return String.format("[%s]: %s", command(), OPTIONS_TO_DESCRIPTIONS.get(this));
   }
 
   public String command() {

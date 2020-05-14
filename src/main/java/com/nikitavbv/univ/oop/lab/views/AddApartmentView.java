@@ -2,36 +2,44 @@ package com.nikitavbv.univ.oop.lab.views;
 
 import java.io.OutputStream;
 import java.io.PrintStream;
+import java.util.Locale;
+import java.util.ResourceBundle;
 
 public class AddApartmentView {
 
   private final PrintStream out;
+  private final ResourceBundle resourceBundle;
 
-  public AddApartmentView(OutputStream out) {
+  public AddApartmentView(OutputStream out, Locale locale) {
     this.out = new PrintStream(out);
+    this.resourceBundle = ResourceBundle.getBundle("AddApartmentResources", locale);
   }
 
   public void printFlatNumberRequest() {
-    out.println("flat number: ");
+    printLocalized("flatNumberRequest");
   }
 
   public void printPrintAreaRequest() {
-    out.println("area: ");
+    printLocalized("areaRequest");
   }
 
   public void printFloorRequest() {
-    out.println("floor: ");
+    printLocalized("floorRequest");
   }
 
   public void printTotalRoomsRequest() {
-    out.println("total rooms: ");
+    printLocalized("totalRoomsRequest");
   }
 
   public void printBuildingTypeRequest() {
-    out.println("building type: ");
+    printLocalized("buildingTypeRequest");
   }
 
   public void printLifetimeRequest() {
-    out.println("lifetime: ");
+    printLocalized("lifetimeRequest");
+  }
+
+  private void printLocalized(String key) {
+    out.println(resourceBundle.getString(key));
   }
 }

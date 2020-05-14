@@ -100,9 +100,12 @@ public class ApartmentController {
         numberOfRoomsFilter = apartmentSearchUserInput.requestNumberOfRooms();
         NUMBER_OF_ROOMS_VALIDATOR.validate(numberOfRoomsFilter);
         break;
-      } catch (FailedToParseNumberException | NumberValueInvalidException e) {
+      } catch (FailedToParseNumberException e) {
         LOGGER.warn("failed to parse search input", e);
-        apartmentsView.showErrorMessage(e.getMessage());
+        apartmentsView.showErrorMessage(e);
+      } catch (NumberValueInvalidException e) {
+        LOGGER.warn("invalid number value", e);
+        apartmentsView.showErrorMessage(e);
       }
     }
 
@@ -134,9 +137,12 @@ public class ApartmentController {
         FLOOR_VALIDATOR.validate(minFloor);
 
         break;
-      } catch (FailedToParseNumberException | NumberValueInvalidException e) {
+      } catch (FailedToParseNumberException e) {
         LOGGER.warn("failed to parse search input", e);
-        apartmentsView.showErrorMessage(e.getMessage());
+        apartmentsView.showErrorMessage(e);
+      } catch (NumberValueInvalidException e) {
+        LOGGER.warn("invalid number value", e);
+        apartmentsView.showErrorMessage(e);
       }
     }
 
@@ -161,7 +167,7 @@ public class ApartmentController {
       LOGGER.info("saved apartments to file");
     } catch (IOException e) {
       LOGGER.error("failed to save apartments to file", e);
-      apartmentsView.showErrorMessage("failed to save apartments");
+      apartmentsView.showFailedToSaveApartmentsErrorMessage();
     }
   }
 }

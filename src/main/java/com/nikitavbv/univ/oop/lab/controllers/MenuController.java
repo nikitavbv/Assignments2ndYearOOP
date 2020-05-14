@@ -61,7 +61,7 @@ public class MenuController {
         handlerByOption(menuOption).handle();
       } catch (UnknownOptionException e) {
         LOGGER.warn("unknown menu option", e);
-        menuView.showError(e.getMessage());
+        menuView.showError(e);
       }
     }
   }
@@ -89,7 +89,7 @@ public class MenuController {
       return true;
     } catch (FailedToReadApartmentsException e) {
       LOGGER.info("failed to read apartments", e);
-      menuView.showError("Failed to read apartments");
+      menuView.showFailedToReadApartmentsError();
       return false;
     }
   }
