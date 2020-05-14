@@ -24,11 +24,11 @@ public class ApartmentController {
   private static final Logger LOGGER = LogManager.getLogger();
 
   private static final Validator<Integer> NUMBER_OF_ROOMS_VALIDATOR =
-          new NonNegativeNumberValidator<>("Number of rooms should be a positive number");
+          new NonNegativeNumberValidator<>();
   private static final Validator<Double> AREA_VALIDATOR =
-          new NonNegativeNumberValidator<>("Area should be a positive number");
+          new NonNegativeNumberValidator<>();
   private static final Validator<Integer> FLOOR_VALIDATOR =
-          new NumberInBoundsValidator<>("Floor should be in (0..100)", 0, 100);
+          new NumberInBoundsValidator<>(0, 100);
 
   private final ApartmentsView apartmentsView;
   private final ApartmentSearchService apartmentSearchService;

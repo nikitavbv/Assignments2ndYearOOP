@@ -4,12 +4,10 @@ import com.nikitavbv.univ.oop.lab.validation.exception.NumberValueInvalidExcepti
 
 public class NumberInBoundsValidator<T extends Number> implements Validator<T> {
 
-  private final String message;
   private final T minBound;
   private final T maxBound;
 
-  public NumberInBoundsValidator(String message, T minBound, T maxBound) {
-    this.message = message;
+  public NumberInBoundsValidator(T minBound, T maxBound) {
     this.minBound = minBound;
     this.maxBound = maxBound;
   }
@@ -17,7 +15,7 @@ public class NumberInBoundsValidator<T extends Number> implements Validator<T> {
   @Override
   public void validate(T input) {
     if (input.doubleValue() <= minBound.doubleValue() || input.doubleValue() >= maxBound.doubleValue()) {
-      throw new NumberValueInvalidException(message);
+      throw new NumberValueInvalidException("Number should be in bounds");
     }
   }
 }
