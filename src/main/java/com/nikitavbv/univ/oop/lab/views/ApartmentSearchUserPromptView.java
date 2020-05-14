@@ -1,38 +1,34 @@
 package com.nikitavbv.univ.oop.lab.views;
 
+import com.nikitavbv.univ.oop.lab.services.MessagesService;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class ApartmentSearchUserPromptView implements View {
+public class ApartmentSearchUserPromptView {
 
   private final PrintStream outputWriter;
-  private ResourceBundle resourceBundle;
+  private final MessagesService messagesService;
 
-  public ApartmentSearchUserPromptView(OutputStream outputStream, Locale locale) {
+  public ApartmentSearchUserPromptView(OutputStream outputStream, MessagesService messagesService) {
     this.outputWriter = new PrintStream(outputStream);
-    setLocale(locale);
+    this.messagesService = messagesService;
   }
 
   public void printNumberOfRoomsRequest() {
-    printFilterCriteriaRequest(resourceBundle.getString("numberOfRoomsRequest"));
+    printFilterCriteriaRequest(messagesService.getString("numberOfRoomsRequest"));
   }
 
   public void printAreaRequest() {
-    printFilterCriteriaRequest(resourceBundle.getString("areaRequest"));
+    printFilterCriteriaRequest(messagesService.getString("areaRequest"));
   }
 
   public void printFloorRequest() {
-    printFilterCriteriaRequest(resourceBundle.getString("filterCriteriaRequest"));
+    printFilterCriteriaRequest(messagesService.getString("filterCriteriaRequest"));
   }
 
   private void printFilterCriteriaRequest(String criteria) {
-    outputWriter.printf(resourceBundle.getString("filterCriteriaRequest"), criteria);
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.resourceBundle = ResourceBundle.getBundle("ApartmentSearchResources", locale);
+    outputWriter.printf(messagesService.getString("filterCriteriaRequest"), criteria);
   }
 }

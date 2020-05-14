@@ -1,18 +1,17 @@
 package com.nikitavbv.univ.oop.lab.views;
 
+import com.nikitavbv.univ.oop.lab.services.MessagesService;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-public class AddApartmentView implements View {
+public class AddApartmentView {
 
   private final PrintStream out;
-  private ResourceBundle resourceBundle;
+  private final MessagesService messagesService;
 
-  public AddApartmentView(OutputStream out, Locale locale) {
+  public AddApartmentView(OutputStream out, MessagesService messagesService) {
     this.out = new PrintStream(out);
-    setLocale(locale);
+    this.messagesService = messagesService;
   }
 
   public void printFlatNumberRequest() {
@@ -40,11 +39,6 @@ public class AddApartmentView implements View {
   }
 
   private void printLocalized(String key) {
-    out.println(resourceBundle.getString(key));
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.resourceBundle = ResourceBundle.getBundle("AddApartmentResources", locale);
+    out.println(messagesService.getString(key));
   }
 }

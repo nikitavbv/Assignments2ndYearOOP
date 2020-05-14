@@ -1,26 +1,22 @@
 package com.nikitavbv.univ.oop.lab.views;
 
+import com.nikitavbv.univ.oop.lab.services.MessagesService;
 import java.io.OutputStream;
 import java.io.PrintStream;
 import java.util.Locale;
 import java.util.ResourceBundle;
 
-public class MenuPromptView implements View {
+public class MenuPromptView {
 
   private final PrintStream out;
-  private ResourceBundle resourceBundle;
+  private final MessagesService messagesService;
 
-  public MenuPromptView(OutputStream out, Locale locale) {
+  public MenuPromptView(OutputStream out, MessagesService messagesService) {
     this.out = new PrintStream(out);
-    setLocale(locale);
+    this.messagesService = messagesService;
   }
 
   public void printSelectMenuOptionPrompt() {
-    out.println(resourceBundle.getString("prompt"));
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.resourceBundle = ResourceBundle.getBundle("MenuPromptResources", locale);
+    out.println(messagesService.getString("prompt"));
   }
 }

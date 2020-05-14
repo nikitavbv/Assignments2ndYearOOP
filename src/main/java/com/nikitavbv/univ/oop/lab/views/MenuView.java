@@ -1,6 +1,7 @@
 package com.nikitavbv.univ.oop.lab.views;
 
 import com.nikitavbv.univ.oop.lab.models.MenuOption;
+import com.nikitavbv.univ.oop.lab.services.MessagesService;
 import com.nikitavbv.univ.oop.lab.validation.exception.UnknownOptionException;
 import java.io.OutputStream;
 import java.io.PrintStream;
@@ -9,37 +10,37 @@ import java.util.Locale;
 import java.util.ResourceBundle;
 import java.util.stream.Collectors;
 
-public class MenuView implements View {
+public class MenuView {
 
-  private PrintStream outputWriter;
-  private PrintStream errorWriter;
-  private ResourceBundle resourceBundle;
+  private final PrintStream outputWriter;
+  private final PrintStream errorWriter;
+  private final MessagesService messagesService;
 
-  public MenuView(OutputStream outputStream, OutputStream errorWriter, Locale locale) {
+  public MenuView(OutputStream outputStream, OutputStream errorWriter, MessagesService messagesService) {
     this.outputWriter = new PrintStream(outputStream);
     this.errorWriter = new PrintStream(errorWriter);
-    setLocale(locale);
+    this.messagesService = messagesService;
   }
 
   public void notifyLocaleChanged() {
-    outputWriter.println(resourceBundle.getString("localeChangedNotif"));
+    outputWriter.println(messagesService.getString("localeChangedNotif"));
   }
 
   public void showFailedToReadApartmentsError() {
-    showError(resourceBundle.getString("failedToReadApartmentsError"));
+    showError(messagesService.getString("failedToReadApartmentsError"));
   }
 
   public void showError(UnknownOptionException e) {
-    showError(resourceBundle.getString("unknownOptionMessage") + e.getOption());
+    showError(messagesService.getString("unknownOptionMessage") + e.getOption());
   }
 
   private void showError(String message) {
-    errorWriter.println(resourceBundle.getString("errorMessage") + message);
+    errorWriter.println(messagesService.getString("errorMessage") + message);
   }
 
   public void showMenu() {
-    outputWriter.println(resourceBundle.getString("menuIntroHeader"));
-    outputWriter.println(resourceBundle.getString("menuIntroPossibleActions"));
+    outputWriter.println(messagesService.getString("menuIntroHeader"));
+    outputWriter.println(messagesService.getString("menuIntroPossibleActions"));
     outputWriter.println(possibleActionsAsString());
   }
 
@@ -48,13 +49,8 @@ public class MenuView implements View {
             .map(option -> String.format(
                     "[%s]: %s",
                     option.command(),
-                    resourceBundle.getString("command_" + option.command())
+                    messagesService.getString("command_" + option.command())
             ))
             .collect(Collectors.joining(System.lineSeparator()));
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    this.resourceBundle = ResourceBundle.getBundle("MenuResources", locale);
   }
 }

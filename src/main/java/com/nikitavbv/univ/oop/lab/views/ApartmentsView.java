@@ -1,43 +1,42 @@
 package com.nikitavbv.univ.oop.lab.views;
 
 import com.nikitavbv.univ.oop.lab.models.Apartment;
+import com.nikitavbv.univ.oop.lab.services.MessagesService;
 import com.nikitavbv.univ.oop.lab.validation.exception.FailedToParseNumberException;
 import com.nikitavbv.univ.oop.lab.validation.exception.NumberValueInvalidException;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
-public class ApartmentsView implements View {
+public class ApartmentsView {
   private static final long NOTHING_FOUND_DELAY = 100; // ms
 
   private final PrintStream outputWriter;
   private final PrintStream errorWriter;
-  private ResourceBundle resourceBundle;
+  private final MessagesService messagesService;
 
-  public ApartmentsView(OutputStream outputStream, OutputStream errorStream, Locale locale) {
+  public ApartmentsView(OutputStream outputStream, OutputStream errorStream, MessagesService messagesService) {
     outputWriter = new PrintStream(outputStream);
     errorWriter = new PrintStream(errorStream);
-    setLocale(locale);
+    this.messagesService = messagesService;
   }
 
   public void showApartments(Apartment[] apartments) {
-    outputWriter.println(resourceBundle.getString("tableHeader"));
+    outputWriter.println(messagesService.getString("tableHeader"));
 
     if (apartments.length == 0) {
-      errorWriter.println(resourceBundle.getString("onNothingFoundMessage"));
+      errorWriter.println(messagesService.getString("onNothingFoundMessage"));
       delayAfterNothingFound();
       return;
     }
 
     outputWriter.printf(
             "%10s | %10s | %10s | %10s | %20s | %10s%n",
-            resourceBundle.getString("numberColumn"),
-            resourceBundle.getString("areaColumn"),
-            resourceBundle.getString("floorColumn"),
-            resourceBundle.getString("roomsColumn"),
-            resourceBundle.getString("typeColumn"),
-            resourceBundle.getString("lifetimeColumn")
+            messagesService.getString("numberColumn"),
+            messagesService.getString("areaColumn"),
+            messagesService.getString("floorColumn"),
+            messagesService.getString("roomsColumn"),
+            messagesService.getString("typeColumn"),
+            messagesService.getString("lifetimeColumn")
     );
 
     for (Apartment apartment : apartments) {
@@ -46,23 +45,23 @@ public class ApartmentsView implements View {
   }
 
   public void showFailedToSaveApartmentsErrorMessage() {
-    showErrorMessage(resourceBundle.getString("failedToSaveApartments"));
+    showErrorMessage(messagesService.getString("failedToSaveApartments"));
   }
 
   public void showErrorMessage(FailedToParseNumberException e) {
-    showErrorMessage(resourceBundle.getString("failedToParseNumberError") + e.getInput());
+    showErrorMessage(messagesService.getString("failedToParseNumberError") + e.getInput());
   }
 
   public void showErrorMessage(NumberValueInvalidException e) {
-    showErrorMessage(resourceBundle.getString("invalidNumberValueError"));
+    showErrorMessage(messagesService.getString("invalidNumberValueError"));
   }
 
   private void showErrorMessage(String message) {
-    errorWriter.println(resourceBundle.getString("errorMessage") + message);
+    errorWriter.println(messagesService.getString("errorMessage") + message);
   }
 
   public void notifyApartmentsSaved() {
-    outputWriter.println(resourceBundle.getString("apartmentsSavedMessage"));
+    outputWriter.println(messagesService.getString("apartmentsSavedMessage"));
   }
 
   private String showApartment(Apartment apartment) {
@@ -72,7 +71,7 @@ public class ApartmentsView implements View {
             apartment.getArea(),
             apartment.getFloor(),
             apartment.getTotalRooms(),
-            resourceBundle.getString("type_" + apartment.getBuildingType().toString().toLowerCase()),
+            messagesService.getString("type_" + apartment.getBuildingType().toString().toLowerCase()),
             apartment.getLifetimeYears()
     );
   }
@@ -83,10 +82,5 @@ public class ApartmentsView implements View {
     } catch (InterruptedException e) {
       throw new RuntimeException(e);
     }
-  }
-
-  @Override
-  public void setLocale(Locale locale) {
-    resourceBundle = ResourceBundle.getBundle("ApartmentsViewResources", locale);
   }
 }

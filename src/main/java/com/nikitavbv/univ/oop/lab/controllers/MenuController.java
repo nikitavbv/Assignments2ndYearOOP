@@ -4,12 +4,12 @@ import com.nikitavbv.univ.oop.lab.input.MenuInput;
 import com.nikitavbv.univ.oop.lab.models.MenuOption;
 import com.nikitavbv.univ.oop.lab.providers.ApartmentProvider;
 import com.nikitavbv.univ.oop.lab.providers.exceptions.FailedToReadApartmentsException;
+import com.nikitavbv.univ.oop.lab.services.MessagesService;
 import com.nikitavbv.univ.oop.lab.validation.AllowedOptionValidator;
 import com.nikitavbv.univ.oop.lab.validation.Validator;
 import com.nikitavbv.univ.oop.lab.validation.exception.UnknownOptionException;
 import com.nikitavbv.univ.oop.lab.views.MenuPromptView;
 import com.nikitavbv.univ.oop.lab.views.MenuView;
-import com.nikitavbv.univ.oop.lab.views.View;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -18,8 +18,6 @@ import org.apache.logging.log4j.LogManager;
 
 public class MenuController {
   private static final Logger LOGGER = LogManager.getLogger();
-  private static final Locale ENGLISH_LOCALE = new Locale("en", "US");
-  private static final Locale RUSSIAN_LOCALE = new Locale("ru", "RU");
 
   private static final Validator<String> MENU_OPTION_VALIDATOR = new AllowedOptionValidator(new String[] {
           "all", "add", "search_rooms", "search_area_floor", "locale", "exit"
@@ -29,21 +27,19 @@ public class MenuController {
   private final MenuPromptView menuPromptView;
   private final MenuInput menuInput;
   private final ApartmentProvider apartmentProvider;
-  private final List<View> views;
+  private final MessagesService messagesService;
 
   private final Map<MenuOption, MenuOptionHandler> handlers;
 
-  private Locale currentLocale = ENGLISH_LOCALE;
-
   public MenuController(
           MenuView menuView, MenuPromptView promptView, MenuInput menuInput, ApartmentController mainService,
-          ApartmentProvider apartmentProvider, List<View> views
+          ApartmentProvider apartmentProvider, MessagesService messagesService
   ) {
     this.menuView = menuView;
     this.menuPromptView = promptView;
     this.menuInput = menuInput;
     this.apartmentProvider = apartmentProvider;
-    this.views = views;
+    this.messagesService = messagesService;
 
     handlers = handlersInit(mainService);
   }
@@ -85,10 +81,10 @@ public class MenuController {
             MenuOption.SEARCH_BY_AREA_AND_FLOOR, apartmentController::runSearchByAreaAndFloor,
             MenuOption.ADD_APARTMENT, apartmentController::addApartment,
             MenuOption.SWITCH_LOCALE, () -> {
-              if (currentLocale.equals(ENGLISH_LOCALE)) {
-                setLocale(RUSSIAN_LOCALE);
+              if (messagesService.isEnglish()) {
+                messagesService.switchToRussian();
               } else {
-                setLocale(ENGLISH_LOCALE);
+                messagesService.switchToRussian();
               }
               menuView.notifyLocaleChanged();
             },
@@ -108,11 +104,6 @@ public class MenuController {
       menuView.showFailedToReadApartmentsError();
       return false;
     }
-  }
-
-  public void setLocale(Locale locale) {
-    views.forEach(v -> v.setLocale(locale));
-    currentLocale = locale;
   }
 
   public interface MenuOptionHandler {
