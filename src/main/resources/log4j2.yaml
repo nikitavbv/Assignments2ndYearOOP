@@ -1,0 +1,15 @@
+Configuration:
+  status: warn
+
+  Appenders:
+    Console:
+      name: stdout
+      target: SYSTEM_OUT
+      PatternLayout:
+        Pattern: "%d{HH:mm:ss} %-5level | %-20class{1} | %msg%n"
+
+  Loggers:
+    Root:
+      level: debug
+      AppenderRef:
+        ref: stdout

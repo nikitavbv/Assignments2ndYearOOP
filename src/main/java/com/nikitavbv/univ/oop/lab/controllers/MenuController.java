@@ -15,7 +15,7 @@ import org.apache.logging.log4j.Logger;
 import org.apache.logging.log4j.LogManager;
 
 public class MenuController {
-  private static final Logger LOGGER = LogManager.getLogger(MenuController.class);
+  private static final Logger LOGGER = LogManager.getLogger();
 
   private static final Validator<String> MENU_OPTION_VALIDATOR = new AllowedOptionValidator(new String[] {
           "all", "add", "search_rooms", "search_area_floor", "exit"

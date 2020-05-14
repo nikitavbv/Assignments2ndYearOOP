@@ -21,7 +21,7 @@ import org.apache.logging.log4j.Logger;
 
 @SuppressWarnings("OptionalGetWithoutIsPresent")
 public class ApartmentController {
-  private static final Logger LOGGER = LogManager.getLogger(MenuController.class);
+  private static final Logger LOGGER = LogManager.getLogger();
 
   private static final Validator<Integer> NUMBER_OF_ROOMS_VALIDATOR =
           new NonNegativeNumberValidator<>("Number of rooms should be a positive number");
