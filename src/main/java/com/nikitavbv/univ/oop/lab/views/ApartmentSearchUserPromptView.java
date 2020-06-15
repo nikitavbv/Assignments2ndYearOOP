@@ -3,8 +3,6 @@ package com.nikitavbv.univ.oop.lab.views;
 import com.nikitavbv.univ.oop.lab.services.MessagesService;
 import java.io.OutputStream;
 import java.io.PrintStream;
-import java.util.Locale;
-import java.util.ResourceBundle;
 
 public class ApartmentSearchUserPromptView {
 

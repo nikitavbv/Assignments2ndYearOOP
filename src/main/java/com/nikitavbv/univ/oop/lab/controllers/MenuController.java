@@ -84,7 +84,7 @@ public class MenuController {
               if (messagesService.isEnglish()) {
                 messagesService.switchToRussian();
               } else {
-                messagesService.switchToRussian();
+                messagesService.switchToEnglish();
               }
               menuView.notifyLocaleChanged();
             },
